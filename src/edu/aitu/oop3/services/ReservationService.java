@@ -3,6 +3,7 @@ package edu.aitu.oop3.services;
 import edu.aitu.oop3.exceptions.InvalidVehiclePlateException;
 import edu.aitu.oop3.exceptions.NoFreeSpotsException;
 import edu.aitu.oop3.exceptions.ReservationStatusException;
+import edu.aitu.oop3.models.ListResult;
 import edu.aitu.oop3.models.ParkingSpot;
 import edu.aitu.oop3.models.Reservation;
 import edu.aitu.oop3.models.Vehicle;
@@ -26,7 +27,14 @@ public class ReservationService implements IReservationService {
 
     @Override
     public List<ParkingSpot> findFreeSpots() {
-        return parkingSpotRepository.findFree();
+        return parkingSpotRepository.getAllSpots().getItems().stream()
+                .filter(spot -> !spot.isReserved())
+                .toList();
+    }
+
+    @Override
+    public ListResult<ParkingSpot> getAllSpotsAsListResult() {
+        return parkingSpotRepository.getAllSpots();
     }
 
     @Override
@@ -47,7 +55,7 @@ public class ReservationService implements IReservationService {
 
         final Reservation reservation = new Reservation(0, startDate, null, existingVehicle, spot);
 
-        parkingSpotRepository.updateStatus(spot.getId(), true);
+        parkingSpotRepository.updateSpotStatus(spot.getId(), true);
 
         return reservationRepository.addReservation(reservation);
     }

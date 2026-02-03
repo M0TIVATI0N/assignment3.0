@@ -1,9 +1,14 @@
 package edu.aitu.oop3.repositories;
 import edu.aitu.oop3.models.ParkingSpot;
-import java.util.List;
+import edu.aitu.oop3.models.ListResult;
 
 public interface IParkingSpotRepository {
-    List<ParkingSpot> findFree();
-    void updateStatus(int id, boolean isReserved);
-    ParkingSpot getById(int id);
+    ListResult<ParkingSpot> getAllSpots();
+    void updateSpotStatus(int id, boolean isReserved);
+    default ParkingSpot getById(int id) {
+        return getAllSpots().getItems().stream()
+                .filter(s -> s.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
 }
