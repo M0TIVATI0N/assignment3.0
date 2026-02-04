@@ -10,7 +10,6 @@ import java.util.Properties;
 
 public class PostgresDB implements IDB {
     private static PostgresDB instance;
-
     private final String URL = "jdbc:postgresql://aws-1-ap-northeast-1.pooler.supabase.com:5432/postgres?sslmode=require";
     private final String USER = "postgres.dghildsdypaedbehejrk";
     private final String PASSWORD;
